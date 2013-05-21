@@ -42,6 +42,7 @@ public abstract class AbstractRecorder
 		snapshot.setArchitecture(System.getProperty("os.arch"));
 		snapshot.setSystemVersion(System.getProperty("os.version"));
 		snapshot.setJavaVersion(System.getProperty("java.version"));
+		// get environment variables here
 		return snapshot;
 	}
 	
