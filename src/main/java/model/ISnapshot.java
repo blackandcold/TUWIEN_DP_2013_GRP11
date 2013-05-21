@@ -1,6 +1,5 @@
 package model;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -8,12 +7,6 @@ import java.util.List;
  * @author Stefan Weghofer
  */
 public interface ISnapshot {
-
-	/**
-	 * Gets all values stored in this snapshot
-	 * @return a hash map containing all values
-	 */
-	HashMap<String, String> getValues();
 	
 	/**
 	 * Gets a hash value for this snapshot object. Can be used to quickly compare 

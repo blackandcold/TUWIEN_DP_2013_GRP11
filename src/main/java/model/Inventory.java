@@ -4,57 +4,121 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.bson.types.ObjectId;
+
+import com.google.code.morphia.annotations.Embedded;
+import com.google.code.morphia.annotations.Entity;
+import com.google.code.morphia.annotations.Id;
+
+/**
+ * This class represents the result of an inventory service run. It contains information
+ * about the hardware, OS and any observed paths
+ * @author Stefan Weghofer
+ */
+@Entity
 public class Inventory {
 
-	//private ObjectId _id;
+	@Id 
+	private ObjectId id;
+
 	private Date timestamp;
+
+	@Embedded
 	private HardwareSnapshot hardwareSnapshot;
-	private OperatingSystemSnapshot softwareSnapshot;
-	private List<DirectorySnapshot> directorySnapshots;
+
+	@Embedded
+	private OperatingSystemSnapshot osSnapshot;
+
+	@Embedded
+	private List<PathSnapshot> pathSnapshots;
 
 	public Inventory() {
+		this.id =  new ObjectId();
 		this.timestamp = new Date();
 	}
 	
+	/**
+	 * @return the id
+	 */
+	public ObjectId getId() {
+		return id;
+	}
+
+	/**
+	 * @param id the id to set
+	 */
+	public void setId(ObjectId id) {
+		this.id = id;
+	}
+
+	/**
+	 * @return the timestamp
+	 */
 	public Date getTimestamp() {
 		return timestamp;
 	}
 
+	/**
+	 * @param timestamp the timestamp to set
+	 */
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
 	}
 
+	/**
+	 * @return the hardwareSnapshot
+	 */
 	public HardwareSnapshot getHardwareSnapshot() {
 		return hardwareSnapshot;
 	}
 
+	/**
+	 * @param hardwareSnapshot the hardwareSnapshot to set
+	 */
 	public void setHardwareSnapshot(HardwareSnapshot hardwareSnapshot) {
 		this.hardwareSnapshot = hardwareSnapshot;
 	}
 
-	public OperatingSystemSnapshot getSoftwareSnapshot() {
-		return softwareSnapshot;
+	/**
+	 * @return the osSnapshot
+	 */
+	public OperatingSystemSnapshot getOperatingSystemSnapshot() {
+		return osSnapshot;
 	}
 
-	public void setSoftwareSnapshot(OperatingSystemSnapshot softwareSnapshot) {
-		this.softwareSnapshot = softwareSnapshot;
+	/**
+	 * @param osSnapshot the osSnapshot to set
+	 */
+	public void setOperatingSystemSnapshot(OperatingSystemSnapshot osSnapshot) {
+		this.osSnapshot = osSnapshot;
 	}
 
-	public List<DirectorySnapshot> getDirectorySnapshots() {
-		return directorySnapshots;
+	/**
+	 * @return the pathSnapshots
+	 */
+	public List<PathSnapshot> getPathSnapshots() {
+		return pathSnapshots;
 	}
 
-	public void setDirectorySnapshots(List<DirectorySnapshot> directorySnapshots) {
-		this.directorySnapshots = directorySnapshots;
+	/**
+	 * @param pathSnapshots the pathSnapshots to set
+	 */
+	public void setPathSnapshots(List<PathSnapshot> pathSnapshots) {
+		this.pathSnapshots = pathSnapshots;
 	}
 
-	public void addDirectorySnapshot(DirectorySnapshot directorySnapshot) {
-		if(this.directorySnapshots == null) {
-			this.directorySnapshots = new ArrayList<DirectorySnapshot>();
+	/**
+	 * Adds a path snapshot to this inventory
+	 * @param fileSnapshot the file snapshot to add
+	 */
+	public void addPathSnapshot(PathSnapshot pathSnapshot) {
+		if(this.pathSnapshots == null) {
+			this.pathSnapshots = new ArrayList<PathSnapshot>();
 		}
-		if(!this.directorySnapshots.contains(directorySnapshot)){
-			this.directorySnapshots.add(directorySnapshot);
+		if(!this.pathSnapshots.contains(pathSnapshot)){
+			this.pathSnapshots.add(pathSnapshot);
 		}
 	}
-	
+
+
 }

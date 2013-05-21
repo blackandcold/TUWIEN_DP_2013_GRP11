@@ -3,10 +3,10 @@ package model;
 import com.google.code.morphia.annotations.Embedded;
 
 /**
- * This class summarizes the hardware composition of the monitored system
+ * This class summarizes information about a single piece of hardware
  * @author Stefan Weghofer
  */
 @Embedded
-public class HardwareSnapshot {
+public class DeviceSnapshot {
 
 }

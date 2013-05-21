@@ -1,19 +1,22 @@
 package model;
 
 import java.util.HashMap;
+import java.util.List;
+
+import com.google.code.morphia.annotations.Embedded;
 
 /**
  * This class summarizes important information concerning the operating system
- * 
  * @author Stefan Weghofer
- *
  */
+@Embedded
 public class OperatingSystemSnapshot
 	extends AbstractSnapshot {
 
 	private String systemName;
 	private String architecture;
 	private String systemVersion;
+	private String javaVersion;
 	private HashMap<String, String> environmentVariables;
 		
 	/**
@@ -80,6 +83,38 @@ public class OperatingSystemSnapshot
 			this.environmentVariables = new HashMap<String, String>();
 		}
 		this.environmentVariables.put(key, value);
+	}
+
+	/**
+	 * @return the javaVersion
+	 */
+	public String getJavaVersion() {
+		return javaVersion;
+	}
+
+	/**
+	 * @param javaVersion the javaVersion to set
+	 */
+	public void setJavaVersion(String javaVersion) {
+		this.javaVersion = javaVersion;
+	}
+
+	
+	
+	/* *******************************************************
+	 * Interface Implementation
+	 * *******************************************************/
+
+	@Override
+	public String getHashValue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<SnapshotDifference> getDifference(ISnapshot sn) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
