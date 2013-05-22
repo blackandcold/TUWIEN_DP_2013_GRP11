@@ -1,6 +1,8 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 import com.google.code.morphia.annotations.Embedded;
@@ -17,7 +19,11 @@ public class OperatingSystemSnapshot
 	private String architecture;
 	private String systemVersion;
 	private String javaVersion;
-	private HashMap<String, String> environmentVariables;
+	private String javaClassPath;
+	private Map<String, String> environmentVariables;
+
+	@Embedded
+	private List<NetworkInterfaceSnapshot> networkSnapshots;
 		
 	/**
 	 * @return the systemName
@@ -64,14 +70,14 @@ public class OperatingSystemSnapshot
 	/**
 	 * @return the environmentVariables
 	 */
-	public HashMap<String, String> getEnvironmentVariables() {
+	public Map<String, String> getEnvironmentVariables() {
 		return environmentVariables;
 	}
 	
 	/**
 	 * @param environmentVariables the environmentVariables to set
 	 */
-	public void setEnvironmentVariables(HashMap<String, String> environmentVariables) {
+	public void setEnvironmentVariables(Map<String, String> environmentVariables) {
 		this.environmentVariables = environmentVariables;
 	}
 	
@@ -99,7 +105,47 @@ public class OperatingSystemSnapshot
 		this.javaVersion = javaVersion;
 	}
 
+	/**
+	 * @return the javaClassPath
+	 */
+	public String getJavaClassPath() {
+		return javaClassPath;
+	}
+
+	/**
+	 * @param javaClassPath the javaClassPath to set
+	 */
+	public void setJavaClassPath(String javaClassPath) {
+		this.javaClassPath = javaClassPath;
+	}
+
+	/**
+	 * @return the networkInterfaceSnapshot
+	 */
+	public List<NetworkInterfaceSnapshot> getNetworkInterfaceSnapshots() {
+		return networkSnapshots;
+	}
+
+	/**
+	 * @param fileSnapshots the fileSnapshots to set
+	 */
+	public void setNetworkInterfaceSnapshots(List<NetworkInterfaceSnapshot> networkSnapshots) {
+		this.networkSnapshots = networkSnapshots;
+	}
 	
+	/**
+	 * Adds a network interface snapshot to this snapshot
+	 * @param fileSnapshot the file snapshot to add
+	 */
+	public void addNetworkInterfaceSnapshot(NetworkInterfaceSnapshot networkSnapshot) {
+		if(this.networkSnapshots == null) {
+			this.networkSnapshots = new ArrayList<NetworkInterfaceSnapshot>();
+		}
+		if(!this.networkSnapshots.contains(networkSnapshot)){
+			this.networkSnapshots.add(networkSnapshot);
+		}
+	}
+
 	
 	/* *******************************************************
 	 * Interface Implementation

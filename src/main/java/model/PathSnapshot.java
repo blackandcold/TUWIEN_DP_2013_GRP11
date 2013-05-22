@@ -13,6 +13,7 @@ import com.google.code.morphia.annotations.Embedded;
 public class PathSnapshot {
 
 	private String path;
+	private boolean exists;
 	
 	@Embedded
 	private List<FileSnapshot> fileSnapshots;
@@ -63,6 +64,20 @@ public class PathSnapshot {
 		for(FileSnapshot sn : fileSnapshots){
 			this.addFileSnapshot(sn);
 		}
+	}
+
+	/**
+	 * @return the exists
+	 */
+	public boolean isExists() {
+		return exists;
+	}
+
+	/**
+	 * @param exists the exists to set
+	 */
+	public void setExists(boolean exists) {
+		this.exists = exists;
 	}
 
 }

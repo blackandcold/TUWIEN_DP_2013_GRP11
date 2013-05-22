@@ -1,5 +1,13 @@
 package inventoryservice;
 
+import java.io.File;
+import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
 import dao.DAOFactory;
 import dao.DbSettings;
 import dao.IInventoryDAO;
@@ -21,14 +29,10 @@ public class InventoryService
 		service.run();
 	}
 
-	private DbSettings settings;
+	private ServiceSettings settings;
 	
 	public InventoryService(){
-		//TODO: load settings
-		this.settings = new DbSettings();
-		this.settings.setDbName("digpre");
-		this.settings.setServerName("localhost");
-		this.settings.setServerPort(27017);
+		this.loadSettings();
 	}
 	
 	private void run() {
@@ -38,12 +42,11 @@ public class InventoryService
 			IRecorder recorder = RecorderFactory.createRecorder(type);
 			
 			// create the inventory
-			Inventory inv = recorder.performInventory();
-			System.out.println("Java Version: " + inv.getOperatingSystemSnapshot().getJavaVersion());
+			Inventory inv = recorder.performInventory(this.settings.getInventoryPaths());
 
 			// save the result to the database
-			IInventoryDAO inventoryDAO = DAOFactory.createInventoryDAO(this.settings);
-			inventoryDAO.add(inv);
+			IInventoryDAO inventoryDAO = DAOFactory.createInventoryDAO(this.settings.getDbSettings());
+			//inventoryDAO.add(inv);
 
 			System.out.println("Press any key to exit...");
 			System.in.read();
@@ -59,6 +62,27 @@ public class InventoryService
 			return RecorderType.Windows;
 		}
 		throw new RuntimeException("No recorder could be found for the current operating system");
+	}
+	
+	private void loadSettings() {
+		try {
+	    	JAXBContext context = JAXBContext.newInstance(ServiceSettings.class);
+		    File settingsFile = new File("settings.xml");
+		    if(!settingsFile.exists()) { 
+		    	// if no settings exists, create a new file with the standard settings
+		    	this.settings = new ServiceSettings();
+		    	Marshaller m = context.createMarshaller();
+		        m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+		        m.marshal(this.settings, settingsFile);
+		    } else { 
+		    	Unmarshaller u = context.createUnmarshaller();
+		    	this.settings = (ServiceSettings) u.unmarshal(new File("./settings.xml"));
+			}
+		} catch (JAXBException e) {
+			e.printStackTrace();
+			System.out.println("Settings could not be loaded");
+			System.exit(1);
+		}
 	}
 
 }

@@ -1,5 +1,7 @@
 package recorder;
 
+import java.util.List;
+
 import model.Inventory;
 
 /**
@@ -20,6 +22,6 @@ public interface IRecorder {
 	 * @param fileTargets a list of file paths to analyze
 	 * @return an inventory item describing the hard- and software environment
 	 */
-	Inventory performInventory(String[] fileTargets);
+	Inventory performInventory(List<String> fileTargets);
 
 }

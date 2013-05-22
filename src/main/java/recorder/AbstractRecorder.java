@@ -1,7 +1,19 @@
 package recorder;
 
+import java.io.File;
+import java.net.InetAddress;
+import java.net.InterfaceAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
+import java.util.List;
+
+import model.FileSnapshot;
 import model.HardwareSnapshot;
 import model.Inventory;
+import model.NetworkInterfaceSnapshot;
 import model.OperatingSystemSnapshot;
 import model.PathSnapshot;
 
@@ -22,10 +34,12 @@ public abstract class AbstractRecorder
 	}
 
 	@Override
-	public Inventory performInventory(String[] fileTargets) {
+	public Inventory performInventory(List<String> fileTargets) {
 		Inventory inv = this.performInventory();
-		for(String path : fileTargets){
-			inv.addPathSnapshot(this.performPathInventory(path));
+		if(fileTargets != null) {
+			for(String path : fileTargets){
+				inv.addPathSnapshot(this.performPathInventory(path));
+			}
 		}
 		return inv;
 	}
@@ -42,16 +56,63 @@ public abstract class AbstractRecorder
 		snapshot.setArchitecture(System.getProperty("os.arch"));
 		snapshot.setSystemVersion(System.getProperty("os.version"));
 		snapshot.setJavaVersion(System.getProperty("java.version"));
-		// get environment variables here
+		snapshot.setJavaClassPath(System.getProperty("java.class.path"));
+		snapshot.setEnvironmentVariables(System.getenv());
+		snapshot.setNetworkInterfaceSnapshots(this.performNetworkInterfaceInventory());
 		return snapshot;
 	}
 	
+	protected List<NetworkInterfaceSnapshot> performNetworkInterfaceInventory(){
+		try {
+			List<NetworkInterfaceSnapshot> networkSnapshots = new ArrayList<NetworkInterfaceSnapshot>();
+			NetworkInterfaceSnapshot networkSn;
+			Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+	        for (NetworkInterface netint : Collections.list(nets)) {
+	        	networkSn = new NetworkInterfaceSnapshot();
+	        	networkSn.setDisplayName(netint.getDisplayName());
+	        	networkSn.setName(netint.getName());
+	        	networkSn.setHardwareAddress(netint.getHardwareAddress());
+	            for (InterfaceAddress address : netint.getInterfaceAddresses()) {
+	                networkSn.addAddress(String.format("%s/%d", address.getAddress().getHostAddress(), address.getNetworkPrefixLength()));
+	            }
+	        	networkSnapshots.add(networkSn);
+	        }
+			return networkSnapshots;
+		} catch (SocketException e) {
+			throw new InventoryFailedException("Inventory on network interfaces failed", e);
+		}
+	}
+	
 	protected PathSnapshot performPathInventory(String path){
+		File file = new File(path);
 		PathSnapshot pathSnapshot = new PathSnapshot(path);
-		
-		//TODO: iterate the directory tree and create the snapshots
-		//pathSnapshot.addFileSnapshot(...)
+		pathSnapshot.setExists(file.exists());
+		if(file.exists()) {
+			pathSnapshot.setFileSnapshots(this.performFileInventory(file));
+		}
 		return pathSnapshot;
+	}
+	
+	private List<FileSnapshot> performFileInventory(File file){
+		List<FileSnapshot> fileSnapshots = new ArrayList<FileSnapshot>();
+		FileSnapshot fileSnapshot = new FileSnapshot(file.getAbsolutePath());
+		fileSnapshot.setDirectory(file.isDirectory());
+		fileSnapshot.setHidden(file.isHidden());
+		fileSnapshot.setLastModified(file.lastModified());
+		fileSnapshots.add(fileSnapshot);
+		if(file.isDirectory()) {
+			if(file.listFiles() != null) {
+				for(File child : file.listFiles()) {
+					fileSnapshots.addAll(this.performFileInventory(child));
+				}
+			} else {
+				fileSnapshot.setCouldNotRead(true);
+				System.out.println("Failed on " + file.getAbsolutePath());
+			}
+		} else {
+			fileSnapshot.setSize(file.length()); // length() only returns a meaningful result on files
+		}
+		return fileSnapshots;
 	}
 	
 

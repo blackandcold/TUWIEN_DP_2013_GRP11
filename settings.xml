@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<serviceSettings>
+    <dbSettings>
+        <dbName>digpre</dbName>
+        <serverName>localhost</serverName>
+        <serverPort>27017</serverPort>
+    </dbSettings>
+    <inventoryPaths>C:\Users\Stefan\Desktop</inventoryPaths>
+    <inventoryPaths>C:\inetpub</inventoryPaths>
+</serviceSettings>
