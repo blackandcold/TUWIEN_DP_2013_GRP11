@@ -1,5 +1,7 @@
 package model;
 
+import java.util.Date;
+
 import com.google.code.morphia.annotations.Embedded;
 
 /**
@@ -11,7 +13,7 @@ import com.google.code.morphia.annotations.Embedded;
 public class FileSnapshot {
 	
 	private String filePath;
-	private long lastModified;
+	private Date lastModified;
 	private long size;
 	private boolean hidden;
 	private boolean directory;
@@ -43,14 +45,14 @@ public class FileSnapshot {
 	/**
 	 * @return the lastModified
 	 */
-	public long getLastModified() {
+	public Date getLastModified() {
 		return lastModified;
 	}
 
 	/**
 	 * @param lastModified the lastModified to set
 	 */
-	public void setLastModified(long lastModified) {
+	public void setLastModified(Date lastModified) {
 		this.lastModified = lastModified;
 	}
 

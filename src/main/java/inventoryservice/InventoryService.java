@@ -46,7 +46,7 @@ public class InventoryService
 
 			// save the result to the database
 			IInventoryDAO inventoryDAO = DAOFactory.createInventoryDAO(this.settings.getDbSettings());
-			//inventoryDAO.add(inv);
+			inventoryDAO.add(inv);
 
 			System.out.println("Press any key to exit...");
 			System.in.read();

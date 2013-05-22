@@ -7,6 +7,7 @@ import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -98,7 +99,7 @@ public abstract class AbstractRecorder
 		FileSnapshot fileSnapshot = new FileSnapshot(file.getAbsolutePath());
 		fileSnapshot.setDirectory(file.isDirectory());
 		fileSnapshot.setHidden(file.isHidden());
-		fileSnapshot.setLastModified(file.lastModified());
+		fileSnapshot.setLastModified(new Date(file.lastModified()));
 		fileSnapshots.add(fileSnapshot);
 		if(file.isDirectory()) {
 			if(file.listFiles() != null) {
@@ -107,7 +108,6 @@ public abstract class AbstractRecorder
 				}
 			} else {
 				fileSnapshot.setCouldNotRead(true);
-				System.out.println("Failed on " + file.getAbsolutePath());
 			}
 		} else {
 			fileSnapshot.setSize(file.length()); // length() only returns a meaningful result on files
