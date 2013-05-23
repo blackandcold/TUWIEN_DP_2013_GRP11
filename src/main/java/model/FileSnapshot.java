@@ -19,6 +19,9 @@ public class FileSnapshot {
 	private boolean directory;
 	private boolean couldNotRead;
 	
+	// empty constructor for MongoDB
+	public FileSnapshot() {}
+	
 	public FileSnapshot(String filePath) {
 		this.filePath = filePath;
 		this.couldNotRead = false; // set if a file or directory could not be analyzed

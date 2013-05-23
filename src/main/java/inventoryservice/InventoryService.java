@@ -1,15 +1,12 @@
 package inventoryservice;
 
 import java.io.File;
-import java.util.List;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import dao.DAOFactory;
-import dao.DbSettings;
 import dao.IInventoryDAO;
 import model.Inventory;
 import recorder.IRecorder;

@@ -42,7 +42,7 @@ public abstract class AbstractDAOMongo<T> {
     protected void openConnection() throws DAOException {
         try {
             connection = new Mongo(this.settings.getServerName(), 
-                                    this.settings.getServerPort());
+                                   this.settings.getServerPort());
         } catch (UnknownHostException ex) {
             Logger.getLogger(AbstractDAOMongo.class.getName()).log(Level.SEVERE, null, ex);
             throw new DAOException("Couldn't establish database connection to the specified host.", ex);
@@ -50,7 +50,9 @@ public abstract class AbstractDAOMongo<T> {
     }
     
     protected void closeConnection() {
-        connection.close();
+    	if(this.connection != null) {
+    		this.connection.close();
+    	}
     }
 
     protected DBCollection getCollection() {

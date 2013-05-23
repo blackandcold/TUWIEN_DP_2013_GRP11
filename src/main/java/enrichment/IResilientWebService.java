@@ -18,21 +18,21 @@ import model.OperatingSystemSnapshot;
 public interface IResilientWebService {
 
 	@WebMethod
-	public String identifyYourself();
+	public String identifyYourself() throws EnrichmentFailedException;
 
 	@WebMethod
-	public OperatingSystemSnapshot identifySWEnvironment();
+	public OperatingSystemSnapshot identifySWEnvironment() throws EnrichmentFailedException;
 
 	@WebMethod
-	public HardwareSnapshot identifyHWEnvironment();
+	public HardwareSnapshot identifyHWEnvironment() throws EnrichmentFailedException;
 
 	@WebMethod
-	public ServiceChangeTimeline serviceChangesSince(Date since);
+	public ServiceChangeTimeline serviceChangesSince(Date since) throws EnrichmentFailedException;
 
 	@WebMethod
-	public List<SystemChange> swEnvironmentChangesSince(Date since);
+	public List<SystemChange> swEnvironmentChangesSince(Date since) throws EnrichmentFailedException;
 
 	@WebMethod
-	public List<SystemChange> hwEnvironmentChangesSince(Date since);
+	public List<SystemChange> hwEnvironmentChangesSince(Date since) throws EnrichmentFailedException;
 
 }

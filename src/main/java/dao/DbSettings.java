@@ -10,6 +10,14 @@ public class DbSettings {
     private int serverPort;
     private String dbName;
     
+    public DbSettings() {}
+    
+    public DbSettings(String serverName, int serverPort, String dbName) {
+    	this.serverName = serverName;
+    	this.serverPort = serverPort;
+    	this.dbName = dbName;
+    }
+    
     /**
      * @return the serverName
      */

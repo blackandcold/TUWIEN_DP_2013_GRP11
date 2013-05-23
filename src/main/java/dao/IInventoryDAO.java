@@ -24,4 +24,10 @@ public interface IInventoryDAO {
 	 */
 	void add(Inventory item) throws DAOException;
 	
+	/**
+	 * Gets the latest inventory item from the database
+	 * @return the latest inventory item
+	 */
+	Inventory getLatestInventory();
+	
 }

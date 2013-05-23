@@ -25,7 +25,8 @@ public class Client {
 			IDemoWebService service = serviceFactory.getPort(IDemoWebService.class);
 			
             System.out.println("Current server time: " + service.getServerTime());
-            //System.out.println("Resilience test: " + service.getAnything());
+            System.out.println("Identity: " + service.identifyYourself());
+            System.out.println("Identity: " + service.identifySWEnvironment().getSystemName());
         } catch(Exception e) {
             e.printStackTrace();
         }

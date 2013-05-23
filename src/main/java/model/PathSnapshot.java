@@ -17,6 +17,9 @@ public class PathSnapshot {
 	
 	@Embedded
 	private List<FileSnapshot> fileSnapshots;
+
+	// empty constructor for MongoDB
+	public PathSnapshot() {}
 	
 	public PathSnapshot(String path) {
 		this.path = path;
