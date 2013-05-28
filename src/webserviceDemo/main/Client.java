@@ -26,7 +26,8 @@ public class Client {
 			
             System.out.println("Current server time: " + service.getServerTime());
             System.out.println("Identity: " + service.identifyYourself());
-            System.out.println("Identity: " + service.identifySWEnvironment().getSystemName());
+            System.out.println("OS: " + service.identifySWEnvironment().getSystemName());
+            System.out.println("Vars: " + service.identifySWEnvironment().getEnvironmentVariables());
         } catch(Exception e) {
             e.printStackTrace();
         }
