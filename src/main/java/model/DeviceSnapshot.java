@@ -1,5 +1,7 @@
 package model;
 
+import java.util.HashMap;
+
 import com.google.code.morphia.annotations.Embedded;
 
 /**
@@ -13,11 +15,7 @@ public class DeviceSnapshot {
 	private String description;
 	private String manufacturer;
 	private String driver;
-	
-	// do we need them?
-	private String freeField1;
-	private String freeField2;
-	private String freeField3;
+	private HashMap<String, String> properties;
 	
 	/**
 	 * @return the name
@@ -75,46 +73,29 @@ public class DeviceSnapshot {
 		this.driver = driver;
 	}
 
+
 	/**
-	 * @return the freeField1
+	 * @return the properties
 	 */
-	public String getFreeField1() {
-		return freeField1;
+	public HashMap<String, String> getProperties() {
+		return properties;
 	}
 
 	/**
-	 * @param freeField1 the freeField1 to set
+	 * @param properties the properties to set
 	 */
-	public void setFreeField1(String freeField1) {
-		this.freeField1 = freeField1;
+	public void setProperties(HashMap<String, String> properties) {
+		this.properties = properties;
 	}
 
 	/**
-	 * @return the freeField2
+	 * @param properties the properties to set
 	 */
-	public String getFreeField2() {
-		return freeField2;
-	}
-
-	/**
-	 * @param freeField2 the freeField2 to set
-	 */
-	public void setFreeField2(String freeField2) {
-		this.freeField2 = freeField2;
-	}
-
-	/**
-	 * @return the freeField3
-	 */
-	public String getFreeField3() {
-		return freeField3;
-	}
-
-	/**
-	 * @param freeField3 the freeField3 to set
-	 */
-	public void setFreeField3(String freeField3) {
-		this.freeField3 = freeField3;
+	public void addProperty(String name, String value) {
+		if(this.properties == null) {
+			this.properties = new HashMap<String, String>();
+		}
+		this.properties.put(name, value);
 	}
 	
 	
