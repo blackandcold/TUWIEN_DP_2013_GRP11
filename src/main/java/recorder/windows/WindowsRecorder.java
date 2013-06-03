@@ -12,8 +12,7 @@ public class WindowsRecorder
 
 	@Override
 	protected HardwareSnapshot performHardwareInventory() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+            return null;
+ 	}
 
 }
