@@ -20,6 +20,11 @@
   </repositories>
   <dependencies>
         <dependency>
+            <groupId>org.jvnet.hudson</groupId>
+            <artifactId>jinterop-wmi</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <dependency>
             <groupId>com.google.code.morphia</groupId>
             <artifactId>morphia</artifactId>
             <version>0.99.1-SNAPSHOT</version>
