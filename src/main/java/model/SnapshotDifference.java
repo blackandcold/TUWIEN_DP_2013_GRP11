@@ -6,16 +6,25 @@ package model;
  */
 public class SnapshotDifference {
 
+	private Class<?> scope;
 	private String identifier;
 	private DifferenceType type;
 	private Object oldValue;
 	private Object newValue;
 	
-	public SnapshotDifference(String identifier, DifferenceType type, Object oldValue, Object newValue) {
+	public SnapshotDifference(Class<?> scope, String identifier, DifferenceType type, Object oldValue, Object newValue) {
+		this.scope = scope;
 		this.identifier = identifier;
 		this.type = type;
 		this.oldValue = oldValue;
 		this.newValue = newValue;
+	}
+
+	/**
+	 * @return the identifier
+	 */
+	public Class<?> getScope() {
+		return scope;
 	}
 	
 	/**
@@ -63,8 +72,8 @@ public class SnapshotDifference {
 	 * @param newValue of the field
 	 * @return a snapshot difference encapsulating the object change
 	 */
-	public static SnapshotDifference createInsert(String identifier, Object newValue){
-		return new SnapshotDifference(identifier, DifferenceType.Inserted, null, newValue);
+	public static SnapshotDifference createInsert(Class<?> scope, String identifier, Object newValue){
+		return new SnapshotDifference(scope, identifier, DifferenceType.Inserted, null, newValue);
 	}
 
 	/**
@@ -74,8 +83,8 @@ public class SnapshotDifference {
 	 * @param newValue of the field
 	 * @return a snapshot difference encapsulating the object change
 	 */
-	public static SnapshotDifference createUpdate(String identifier, Object oldValue, Object newValue){
-		return new SnapshotDifference(identifier, DifferenceType.Updated, oldValue, newValue);
+	public static SnapshotDifference createUpdate(Class<?> scope, String identifier, Object oldValue, Object newValue){
+		return new SnapshotDifference(scope, identifier, DifferenceType.Updated, oldValue, newValue);
 	}
 
 	/**
@@ -85,8 +94,8 @@ public class SnapshotDifference {
 	 * @param newValue of the field
 	 * @return a snapshot difference encapsulating the object change
 	 */
-	public static SnapshotDifference createDelete(String identifier, Object oldValue){
-		return new SnapshotDifference(identifier, DifferenceType.Deleted, oldValue, null);
+	public static SnapshotDifference createDelete(Class<?> scope, String identifier, Object oldValue){
+		return new SnapshotDifference(scope, identifier, DifferenceType.Deleted, oldValue, null);
 	}
 	
 }

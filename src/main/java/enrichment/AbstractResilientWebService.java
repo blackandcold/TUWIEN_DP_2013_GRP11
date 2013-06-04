@@ -1,16 +1,18 @@
 package enrichment;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.jws.WebMethod;
 
+import model.HardwareSnapshot;
+import model.Inventory;
+import model.OperatingSystemSnapshot;
+import model.SnapshotDifference;
 import dao.DAOFactory;
 import dao.DbSettings;
 import dao.IInventoryDAO;
-
-import model.HardwareSnapshot;
-import model.OperatingSystemSnapshot;
 import enrichment.dto.ServiceChangeTimeline;
 import enrichment.dto.SystemChange;
 
@@ -27,18 +29,6 @@ public abstract class AbstractResilientWebService
 	public AbstractResilientWebService(DbSettings settings){
 		this.inventoryDAO = DAOFactory.createInventoryDAO(settings);
 	}
-
-
-	/* *******************************************************
-	 * Abstract Methods
-	 * *******************************************************/
-
-	/**
-	 * Has to be overridden is sub classes to get the database connection information
-	 * @return a dbsettings object specifying the connection to the database
-	 */
-	//protected abstract DbSettings getDbSettings();
-	
 	
 
 	/* *******************************************************
@@ -64,7 +54,18 @@ public abstract class AbstractResilientWebService
 
 	@WebMethod
 	public List<SystemChange> swEnvironmentChangesSince(Date since) throws EnrichmentFailedException  {
-		// TODO Auto-generated method stub
+		List<Inventory> timeline = this.inventoryDAO.getInventoryTimeline(since);
+		List<SnapshotDifference> differences = new ArrayList<SnapshotDifference>();
+		Inventory predecessor;
+		Inventory successor;
+		for(int i=0;(i+1)<timeline.size();i++){
+			predecessor = timeline.get(i);
+			successor = timeline.get(i+1);
+			differences.addAll(predecessor.getDifference(successor));
+		}
+		for(SnapshotDifference dif : differences){
+			System.out.println(String.format("%s %s %s %s %s", dif.getScope().getName(), dif.getIdentifier(), dif.getDifferenceType(), dif.getOldValue(), dif.getNewValue()));
+		}
 		return null;
 	}
 

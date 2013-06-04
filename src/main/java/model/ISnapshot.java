@@ -7,6 +7,13 @@ import java.util.List;
  * @author Stefan Weghofer
  */
 public interface ISnapshot {
+
+	/**
+	 * Return a hash value for this snapshot object. Can be used to quickly compare 
+	 * the whole object to another one
+	 * @return a hash value of this object
+	 */
+	String getHashValue();
 	
 	/**
 	 * Calculates a hash value for this snapshot object. Can be used to quickly compare 

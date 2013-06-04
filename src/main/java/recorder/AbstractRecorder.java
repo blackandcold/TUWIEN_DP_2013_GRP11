@@ -1,7 +1,6 @@
 package recorder;
 
 import java.io.File;
-import java.net.InetAddress;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;

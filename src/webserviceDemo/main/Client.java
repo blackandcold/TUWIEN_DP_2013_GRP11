@@ -1,6 +1,8 @@
 package main;
 
 import java.net.URL;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
@@ -27,10 +29,18 @@ public class Client {
             System.out.println("Current server time: " + service.getServerTime());
             System.out.println("Identity: " + service.identifyYourself());
             System.out.println("OS: " + service.identifySWEnvironment().getSystemName());
-            System.out.println("Vars: " + service.identifySWEnvironment().getEnvironmentVariables());
+            System.out.println("Vars: " + service.swEnvironmentChangesSince(this.getDate(1, 1, 2013)));
         } catch(Exception e) {
             e.printStackTrace();
         }
     }
+
+	private Date getDate(int day, int month, int year){
+		Calendar date = Calendar.getInstance();
+		date.set(Calendar.YEAR, year);
+		date.set(Calendar.MONTH, month);
+		date.set(Calendar.DAY_OF_MONTH, day);
+		return date.getTime();
+	}
 
 }

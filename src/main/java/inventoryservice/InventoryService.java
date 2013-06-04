@@ -1,20 +1,20 @@
 package inventoryservice;
 
 import java.io.File;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import dao.DAOFactory;
-import dao.IInventoryDAO;
-import model.ISnapshot;
 import model.Inventory;
 import model.OperatingSystemSnapshot;
 import model.SnapshotDifference;
 import recorder.IRecorder;
 import recorder.RecorderFactory;
 import recorder.RecorderType;
+import dao.DAOFactory;
+import dao.IInventoryDAO;
 
 /**
  * A small console application, allowing the execution of the inventory service
@@ -43,17 +43,15 @@ public class InventoryService
 			
 			// create the inventory
 			Inventory inv = recorder.performInventory(this.settings.getInventoryPaths());
-			
 			inv.calculateHashValue(); // calculate once so the .hash-fields are set for the db queries
-			//System.out.println(inv.getOperatingSystemSnapshot().getHash());
-			
+		
 			for(SnapshotDifference dif : inv.getOperatingSystemSnapshot().getDifference(new OperatingSystemSnapshot())){
-				System.out.println(String.format("%s %s %s %s", dif.getIdentifier(), dif.getDifferenceType(), dif.getOldValue(), dif.getNewValue()));
+				//System.out.println(String.format("%s %s %s %s %s", dif.getScope().getName(), dif.getIdentifier(), dif.getDifferenceType(), dif.getOldValue(), dif.getNewValue()));
 			}
 
 			// save the result to the database
 			IInventoryDAO inventoryDAO = DAOFactory.createInventoryDAO(this.settings.getDbSettings());
-			//inventoryDAO.add(inv);
+			inventoryDAO.add(inv);
 			
 			System.out.println("Press any key to exit...");
 			System.in.read();

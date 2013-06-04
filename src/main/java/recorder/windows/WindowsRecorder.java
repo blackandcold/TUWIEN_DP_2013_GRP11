@@ -1,13 +1,14 @@
 package recorder.windows;
 
 import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import model.HardwareSnapshot;
+
 import org.jinterop.dcom.common.JIException;
 import org.jinterop.dcom.core.JIComServer;
 import org.jinterop.dcom.core.JIProgId;
 import org.jinterop.dcom.core.JISession;
+
 import recorder.AbstractRecorder;
 /**
  * This class performs the inventory service for the Microsoft Windows operating system.

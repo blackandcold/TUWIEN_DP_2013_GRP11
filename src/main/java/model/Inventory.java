@@ -19,8 +19,10 @@ import com.google.code.morphia.annotations.Id;
 public class Inventory extends AbstractSnapshot {
 
 	@Id 
+	@Exclude
 	private ObjectId id;
 
+	@Exclude
 	private Date timestamp;
 
 	@Embedded

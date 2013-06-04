@@ -5,11 +5,10 @@ import java.util.List;
 
 import javax.jws.WebMethod;
 
-import enrichment.dto.ServiceChangeTimeline;
-import enrichment.dto.SystemChange;
-
 import model.HardwareSnapshot;
 import model.OperatingSystemSnapshot;
+import enrichment.dto.ServiceChangeTimeline;
+import enrichment.dto.SystemChange;
 
 /**
  * This interface describes which methods a resilient webservice has to expose
