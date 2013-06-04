@@ -8,7 +8,10 @@ import javax.xml.bind.Unmarshaller;
 
 import dao.DAOFactory;
 import dao.IInventoryDAO;
+import model.ISnapshot;
 import model.Inventory;
+import model.OperatingSystemSnapshot;
+import model.SnapshotDifference;
 import recorder.IRecorder;
 import recorder.RecorderFactory;
 import recorder.RecorderType;
@@ -40,14 +43,16 @@ public class InventoryService
 			
 			// create the inventory
 			Inventory inv = recorder.performInventory(this.settings.getInventoryPaths());
+			
+			inv.calculateHashValue(); // calculate once so the .hash-fields are set for the db queries
+			System.out.println(inv.getOperatingSystemSnapshot().getHash());
 
 			// save the result to the database
 			IInventoryDAO inventoryDAO = DAOFactory.createInventoryDAO(this.settings.getDbSettings());
-			inventoryDAO.add(inv);
-
+			//inventoryDAO.add(inv);
+			
 			System.out.println("Press any key to exit...");
 			System.in.read();
-			System.out.println("Finished...");
 		} catch(Exception ex){
 			ex.printStackTrace();
 		}

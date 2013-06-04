@@ -10,7 +10,7 @@ import com.google.code.morphia.annotations.Embedded;
  * @author Stefan Weghofer
  */
 @Embedded
-public class FileSnapshot {
+public class FileSnapshot extends AbstractSnapshot {
 	
 	private String filePath;
 	private Date lastModified;
@@ -114,4 +114,5 @@ public class FileSnapshot {
 	public void setCouldNotRead(boolean couldNotRead) {
 		this.couldNotRead = couldNotRead;
 	}
+	
 }

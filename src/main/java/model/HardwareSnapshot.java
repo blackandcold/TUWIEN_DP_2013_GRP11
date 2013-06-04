@@ -10,7 +10,7 @@ import com.google.code.morphia.annotations.Embedded;
  * @author Stefan Weghofer
  */
 @Embedded
-public class HardwareSnapshot {
+public class HardwareSnapshot extends AbstractSnapshot {
 	
 	@Embedded
 	private List<DeviceSnapshot> deviceSnapshots;

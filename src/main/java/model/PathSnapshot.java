@@ -10,7 +10,7 @@ import com.google.code.morphia.annotations.Embedded;
  * @author Stefan Weghofer
  */
 @Embedded
-public class PathSnapshot {
+public class PathSnapshot extends AbstractSnapshot {
 
 	private String path;
 	private boolean exists;
@@ -83,4 +83,12 @@ public class PathSnapshot {
 		this.exists = exists;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof PathSnapshot)){
+			return false;
+		}
+		PathSnapshot o = (PathSnapshot) obj;
+		return o.path.equals(this.path);
+	}
 }

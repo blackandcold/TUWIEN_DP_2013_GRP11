@@ -16,7 +16,7 @@ import com.google.code.morphia.annotations.Id;
  * @author Stefan Weghofer
  */
 @Entity
-public class Inventory {
+public class Inventory extends AbstractSnapshot {
 
 	@Id 
 	private ObjectId id;

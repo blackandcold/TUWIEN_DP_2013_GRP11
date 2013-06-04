@@ -10,7 +10,7 @@ import com.google.code.morphia.annotations.Embedded;
  * @author Stefan Weghofer
  */
 @Embedded
-public class NetworkInterfaceSnapshot {
+public class NetworkInterfaceSnapshot extends AbstractSnapshot {
 
 	private String name;
 	private String displayName;
@@ -83,5 +83,14 @@ public class NetworkInterfaceSnapshot {
 	 */
 	public void setHardwareAddress(byte[] hardwareAddress) {
 		this.hardwareAddress = hardwareAddress;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(!(obj instanceof NetworkInterfaceSnapshot)){
+			return false;
+		}
+		NetworkInterfaceSnapshot o = (NetworkInterfaceSnapshot) obj;
+		return o.name.equals(this.name);
 	}
 }

@@ -9,11 +9,11 @@ import java.util.List;
 public interface ISnapshot {
 	
 	/**
-	 * Gets a hash value for this snapshot object. Can be used to quickly compare 
+	 * Calculates a hash value for this snapshot object. Can be used to quickly compare 
 	 * the whole object to another one
 	 * @return a hash value of this object
 	 */
-	String getHashValue();
+	String calculateHashValue();
 	
 	/**
 	 * Gets the differences between the current snapshot and the passed one

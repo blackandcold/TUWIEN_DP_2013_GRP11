@@ -148,18 +148,11 @@ public class OperatingSystemSnapshot
 
 	
 	/* *******************************************************
-	 * Interface Implementation
+	 * Interface and Abstract Class Implementation
 	 * *******************************************************/
 
-	public String getHashValue() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
-	public List<SnapshotDifference> getDifference(ISnapshot sn) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 	
 }
