@@ -17,8 +17,8 @@ public class WindowsRecorder
 	extends AbstractRecorder {
 
 	@Override
-	protected HardwareSnapshot performHardwareInventory() 
-        {
+	protected HardwareSnapshot performHardwareInventory() {
+		/*
             String os = System.getProperty("s.name").toLowerCase();
             try 
             {   
@@ -38,8 +38,8 @@ public class WindowsRecorder
                 Logger.getLogger(WindowsRecorder.class.getName()).log(Level.SEVERE, null, ex);
             } catch (UnknownHostException ex) {
                 Logger.getLogger(WindowsRecorder.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            return null;
+            }*/
+            return new HardwareSnapshot();
  	}
 
         private HardwareSnapshot windowsSystemInventory() throws JIException, UnknownHostException

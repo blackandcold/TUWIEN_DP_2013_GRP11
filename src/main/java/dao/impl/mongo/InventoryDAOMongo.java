@@ -39,7 +39,7 @@ implements IInventoryDAO {
 		return Inventory.class;
 	}
 
-	@Override
+
 	public Inventory getLatestInventory() {
 		DBCursor cursor = null;
 		try {

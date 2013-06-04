@@ -151,13 +151,11 @@ public class OperatingSystemSnapshot
 	 * Interface Implementation
 	 * *******************************************************/
 
-	@Override
 	public String getHashValue() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	public List<SnapshotDifference> getDifference(ISnapshot sn) {
 		// TODO Auto-generated method stub
 		return null;

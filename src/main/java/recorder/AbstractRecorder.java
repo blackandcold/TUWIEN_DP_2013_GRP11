@@ -26,7 +26,6 @@ import model.PathSnapshot;
 public abstract class AbstractRecorder 
 	implements IRecorder {
 	
-	@Override
 	public Inventory performInventory() {
 		Inventory inv = new Inventory();
 		inv.setHardwareSnapshot(this.performHardwareInventory());
@@ -34,7 +33,6 @@ public abstract class AbstractRecorder
 		return inv;
 	}
 
-	@Override
 	public Inventory performInventory(List<String> fileTargets) {
 		Inventory inv = this.performInventory();
 		if(fileTargets != null) {

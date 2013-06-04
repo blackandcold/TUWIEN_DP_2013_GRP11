@@ -45,40 +45,34 @@ public abstract class AbstractResilientWebService
 	 * Resilient WebService Methods
 	 * *******************************************************/
 
-	@Override
 	@WebMethod
 	public OperatingSystemSnapshot identifySWEnvironment() throws EnrichmentFailedException  {
 		System.out.println(this.inventoryDAO.getLatestInventory().getTimestamp());
 		return this.inventoryDAO.getLatestInventory().getOperatingSystemSnapshot();
 	}
 
-	@Override
 	@WebMethod
 	public HardwareSnapshot identifyHWEnvironment() throws EnrichmentFailedException  {
 		return this.inventoryDAO.getLatestInventory().getHardwareSnapshot();
 	}
 
-	@Override
 	@WebMethod
 	public ServiceChangeTimeline serviceChangesSince(Date since) throws EnrichmentFailedException  {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	@WebMethod
 	public List<SystemChange> swEnvironmentChangesSince(Date since) throws EnrichmentFailedException  {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
 	@WebMethod
 	public List<SystemChange> hwEnvironmentChangesSince(Date since) throws EnrichmentFailedException  {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 
 
 }
