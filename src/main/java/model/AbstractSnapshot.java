@@ -86,6 +86,7 @@ implements ISnapshot {
 		}
 		ArrayList<SnapshotDifference> differences = new ArrayList<SnapshotDifference>();
 		Class<?> clazz = sn.getClass();
+		String identifier = null;
 		for(Field f : clazz.getDeclaredFields()){
 			try {
 				if(f.isAnnotationPresent(Exclude.class)){
@@ -104,11 +105,11 @@ implements ISnapshot {
 						List<?> newList = (List<?>) newValue;
 						if(oldList == null && newList != null) { // all elements were added
 							for(Object element : newList){
-								differences.add(SnapshotDifference.createInsert(clazz, f.getName(), element));
+								differences.add(SnapshotDifference.createInsert(f.getName(), element));
 							}
 						} else if(oldList != null && newList == null) { // all map entries were deleted
 							for(Object element : oldList){
-								differences.add(SnapshotDifference.createDelete(clazz, f.getName(), element));
+								differences.add(SnapshotDifference.createDelete(f.getName(), element));
 							}
 						} else { // compare entries manually
 							ParameterizedType listType = (ParameterizedType) f.getGenericType();
@@ -116,7 +117,7 @@ implements ISnapshot {
 							boolean compareSnapshots = ISnapshot.class.isAssignableFrom(listClass);
 							for(Object element : oldList){
 								if(!newList.contains(element)){
-									differences.add(SnapshotDifference.createInsert(clazz, f.getName(), element));
+									differences.add(SnapshotDifference.createDelete(f.getName(), element));
 								} else {
 									if(compareSnapshots) {
 										int index = newList.indexOf(element);
@@ -128,7 +129,7 @@ implements ISnapshot {
 							}
 							for(Object element : newList){
 								if(!oldList.contains(element)){
-									differences.add(SnapshotDifference.createDelete(clazz, f.getName(), element));
+									differences.add(SnapshotDifference.createInsert(f.getName(), element));
 								} 
 							}
 						}
@@ -137,25 +138,25 @@ implements ISnapshot {
 						Map<?,?> newMap = (Map<?,?>) newValue;
 						if(oldMap == null && newMap != null) { // all map entries were added
 							for(Object key : newMap.keySet()){
-								differences.add(SnapshotDifference.createInsert(clazz, f.getName() + "." + key, newMap.get(key)));
+								differences.add(SnapshotDifference.createInsert(f.getName() + "." + key, newMap.get(key)));
 							}
 						} else if(oldMap != null && newMap == null) { // all map entries were deleted
 							for(Object key : oldMap.keySet()){
-								differences.add(SnapshotDifference.createDelete(clazz, f.getName() + "." + key, oldMap.get(key)));
+								differences.add(SnapshotDifference.createDelete(f.getName() + "." + key, oldMap.get(key)));
 							}
 						} else { // compare entries manually
 							for(Object key : oldMap.keySet()){
 								if(newMap.containsKey(key)){
 									if(!oldMap.get(key).equals(newMap.get(key))){
-										differences.add(SnapshotDifference.createUpdate(clazz, f.getName() + "." + key, oldMap.get(key), newMap.get(key)));
+										differences.add(SnapshotDifference.createUpdate(f.getName() + "." + key, oldMap.get(key), newMap.get(key)));
 									}
 								} else {
-									differences.add(SnapshotDifference.createDelete(clazz, f.getName() + "." + key, oldMap.get(key)));
+									differences.add(SnapshotDifference.createDelete(f.getName() + "." + key, oldMap.get(key)));
 								}
 							}
 							for(Object key : newMap.keySet()){
 								if(!oldMap.containsKey(key)){
-									differences.add(SnapshotDifference.createInsert(clazz, f.getName() + "." + key, newMap.get(key)));
+									differences.add(SnapshotDifference.createInsert(f.getName() + "." + key, newMap.get(key)));
 								}
 							}
 						}
@@ -165,15 +166,23 @@ implements ISnapshot {
 						differences.addAll(oldSN.getDifference(newSN));
 					} else {
 						if((newValue != null && !newValue.equals(oldValue)) || (oldValue != null && !oldValue.equals(newValue))){
-							differences.add(SnapshotDifference.createUpdate(clazz, f.getName(), oldValue, newValue));
+							System.out.println(f.getName() + ": " + oldValue + " -> " + newValue);
+							differences.add(SnapshotDifference.createUpdate(f.getName(), oldValue, newValue));
 						}
 					}
+				}
+				if(f.isAnnotationPresent(Identifier.class)){
+					identifier = oldValue.toString();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
 				f.setAccessible(false);
 			}
+		}
+		// add identifier for more context information 
+		for(SnapshotDifference diff : differences){
+			diff.addContextAsFirst(clazz, identifier);
 		}
 		return differences;
 	}

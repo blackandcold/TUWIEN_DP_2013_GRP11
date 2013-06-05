@@ -11,8 +11,10 @@ import com.google.code.morphia.annotations.Embedded;
  */
 @Embedded
 public class FileSnapshot extends AbstractSnapshot {
-	
+
+	@Identifier
 	private String filePath;
+	
 	private Date lastModified;
 	private long size;
 	private boolean hidden;
@@ -45,6 +47,11 @@ public class FileSnapshot extends AbstractSnapshot {
 		return comp.filePath.equals(this.filePath);
 	}
 
+	@Override
+	public String toString() {
+		return this.filePath;
+	}
+	
 	/**
 	 * @return the lastModified
 	 */

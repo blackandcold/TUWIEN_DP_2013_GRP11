@@ -7,7 +7,12 @@ import java.util.Date;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
+import org.omg.CORBA.Environment;
+
+import model.KeyValue;
 import webservice.IDemoWebService;
+import enrichment.dto.SystemChange;
+import enrichment.dto.SystemChangeSynopsis;
 
 public class Client {
 
@@ -29,7 +34,30 @@ public class Client {
             System.out.println("Current server time: " + service.getServerTime());
             System.out.println("Identity: " + service.identifyYourself());
             System.out.println("OS: " + service.identifySWEnvironment().getSystemName());
-            System.out.println("Vars: " + service.swEnvironmentChangesSince(this.getDate(1, 1, 2013)));
+            for(SystemChangeSynopsis syn : service.serviceChangesSince(this.getDate(1, 1, 2013))){
+                System.out.println("++++++++++++++++++++++ Changes on: " + syn.getTimestamp() + " ++++++++++++++++++++++");
+                for(SystemChange change : syn.getSystemChanges()){
+                	for(KeyValue<String, String> context : change.getContexts()){
+                		System.out.print(String.format("%s[%s] ", context.getKey(), context.getValue()==null?"":context.getValue()));
+                	}
+                	System.out.println();
+                	System.out.print(change.getDifferenceType() + " " + change.getIdentifier() +": ");
+                	switch(change.getDifferenceType()){
+                	case Inserted:
+                		System.out.print(change.getNewValue());
+						break;
+					case Deleted:
+                		System.out.print(change.getOldValue());
+						break;
+					case Updated:
+                		System.out.print(change.getOldValue() + " -> " + change.getNewValue());
+						break;
+                	}
+                	System.out.println();
+                	System.out.println();
+                }
+            }
+            System.out.println("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
         } catch(Exception e) {
             e.printStackTrace();
         }

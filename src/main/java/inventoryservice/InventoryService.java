@@ -44,10 +44,6 @@ public class InventoryService
 			// create the inventory
 			Inventory inv = recorder.performInventory(this.settings.getInventoryPaths());
 			inv.calculateHashValue(); // calculate once so the .hash-fields are set for the db queries
-		
-			for(SnapshotDifference dif : inv.getOperatingSystemSnapshot().getDifference(new OperatingSystemSnapshot())){
-				//System.out.println(String.format("%s %s %s %s %s", dif.getScope().getName(), dif.getIdentifier(), dif.getDifferenceType(), dif.getOldValue(), dif.getNewValue()));
-			}
 
 			// save the result to the database
 			IInventoryDAO inventoryDAO = DAOFactory.createInventoryDAO(this.settings.getDbSettings());

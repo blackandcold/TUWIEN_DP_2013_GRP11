@@ -1,30 +1,26 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a difference in two snapshot items
  * @author Stefan Weghofer
  */
 public class SnapshotDifference {
 
-	private Class<?> scope;
+	private List<KeyValue<Class<?>, String>> contexts;
 	private String identifier;
 	private DifferenceType type;
 	private Object oldValue;
 	private Object newValue;
 	
-	public SnapshotDifference(Class<?> scope, String identifier, DifferenceType type, Object oldValue, Object newValue) {
-		this.scope = scope;
+	public SnapshotDifference(String identifier, DifferenceType type, Object oldValue, Object newValue) {
+		this.contexts = new ArrayList<KeyValue<Class<?>, String>>();
 		this.identifier = identifier;
 		this.type = type;
 		this.oldValue = oldValue;
 		this.newValue = newValue;
-	}
-
-	/**
-	 * @return the identifier
-	 */
-	public Class<?> getScope() {
-		return scope;
 	}
 	
 	/**
@@ -54,15 +50,32 @@ public class SnapshotDifference {
 	public Object getNewValue() {
 		return newValue;
 	}
-	
+
 	/**
-	 * Specifies the type of difference
-	 * @author Stefan Weghofer
+	 * @return the contexts
 	 */
-	public enum DifferenceType {
-		Inserted,
-		Updated,
-		Deleted
+	public List<KeyValue<Class<?>, String>> getContexts() {
+		return contexts;
+	}
+
+	/**
+	 * @return the contexts
+	 */
+	public void addContext(Class<?> context, String identifier) {
+		if(this.contexts == null){
+			this.contexts = new ArrayList<KeyValue<Class<?>, String>>();
+		}
+		this.contexts.add(new KeyValue<Class<?>, String>(context, identifier));
+	}
+
+	/**
+	 * @return the contexts
+	 */
+	public void addContextAsFirst(Class<?> context, String identifier) {
+		if(this.contexts == null){
+			this.contexts = new ArrayList<KeyValue<Class<?>, String>>();
+		}
+		this.contexts.add(0, new KeyValue<Class<?>, String>(context, identifier));
 	}
 	
 	/**
@@ -72,8 +85,8 @@ public class SnapshotDifference {
 	 * @param newValue of the field
 	 * @return a snapshot difference encapsulating the object change
 	 */
-	public static SnapshotDifference createInsert(Class<?> scope, String identifier, Object newValue){
-		return new SnapshotDifference(scope, identifier, DifferenceType.Inserted, null, newValue);
+	public static SnapshotDifference createInsert(String identifier, Object newValue){
+		return new SnapshotDifference(identifier, DifferenceType.Inserted, null, newValue);
 	}
 
 	/**
@@ -83,8 +96,8 @@ public class SnapshotDifference {
 	 * @param newValue of the field
 	 * @return a snapshot difference encapsulating the object change
 	 */
-	public static SnapshotDifference createUpdate(Class<?> scope, String identifier, Object oldValue, Object newValue){
-		return new SnapshotDifference(scope, identifier, DifferenceType.Updated, oldValue, newValue);
+	public static SnapshotDifference createUpdate(String identifier, Object oldValue, Object newValue){
+		return new SnapshotDifference(identifier, DifferenceType.Updated, oldValue, newValue);
 	}
 
 	/**
@@ -94,8 +107,8 @@ public class SnapshotDifference {
 	 * @param newValue of the field
 	 * @return a snapshot difference encapsulating the object change
 	 */
-	public static SnapshotDifference createDelete(Class<?> scope, String identifier, Object oldValue){
-		return new SnapshotDifference(scope, identifier, DifferenceType.Deleted, oldValue, null);
+	public static SnapshotDifference createDelete(String identifier, Object oldValue){
+		return new SnapshotDifference(identifier, DifferenceType.Deleted, oldValue, null);
 	}
 	
 }

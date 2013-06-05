@@ -69,7 +69,7 @@ public abstract class AbstractRecorder
 	        	networkSn = new NetworkInterfaceSnapshot();
 	        	networkSn.setDisplayName(netint.getDisplayName());
 	        	networkSn.setName(netint.getName());
-	        	networkSn.setHardwareAddress(netint.getHardwareAddress());
+	        	networkSn.setHardwareAddress(this.createMacAddress(netint.getHardwareAddress()));
 	            for (InterfaceAddress address : netint.getInterfaceAddresses()) {
 	                networkSn.addAddress(String.format("%s/%d", address.getAddress().getHostAddress(), address.getNetworkPrefixLength()));
 	            }
@@ -79,6 +79,17 @@ public abstract class AbstractRecorder
 		} catch (SocketException e) {
 			throw new InventoryFailedException("Inventory on network interfaces failed", e);
 		}
+	}
+	
+	private String createMacAddress(byte[] mac){
+		if(mac == null) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < mac.length; i++) {
+			sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));		
+		}
+		return sb.toString();
 	}
 	
 	protected PathSnapshot performPathInventory(String path){

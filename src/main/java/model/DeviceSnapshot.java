@@ -11,7 +11,9 @@ import com.google.code.morphia.annotations.Embedded;
 @Embedded
 public class DeviceSnapshot {
 	
+	@Identifier
 	private String name;
+	
 	private String description;
 	private String manufacturer;
 	private String driver;
@@ -98,5 +100,9 @@ public class DeviceSnapshot {
 		this.properties.put(name, value);
 	}
 	
+	@Override
+	public String toString() {
+		return this.name;
+	}
 	
 }

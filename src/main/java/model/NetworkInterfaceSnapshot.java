@@ -12,10 +12,12 @@ import com.google.code.morphia.annotations.Embedded;
 @Embedded
 public class NetworkInterfaceSnapshot extends AbstractSnapshot {
 
+	@Identifier
 	private String name;
+	
 	private String displayName;
 	private List<String> addresses;
-	private byte[] hardwareAddress;
+	private String hardwareAddress;
 	
 	/**
 	 * @return the name
@@ -74,14 +76,14 @@ public class NetworkInterfaceSnapshot extends AbstractSnapshot {
 	/**
 	 * @return the hardwareAddress
 	 */
-	public byte[] getHardwareAddress() {
+	public String getHardwareAddress() {
 		return hardwareAddress;
 	}
 
 	/**
 	 * @param hardwareAddress the hardwareAddress to set
 	 */
-	public void setHardwareAddress(byte[] hardwareAddress) {
+	public void setHardwareAddress(String hardwareAddress) {
 		this.hardwareAddress = hardwareAddress;
 	}
 	
@@ -93,4 +95,10 @@ public class NetworkInterfaceSnapshot extends AbstractSnapshot {
 		NetworkInterfaceSnapshot o = (NetworkInterfaceSnapshot) obj;
 		return o.name.equals(this.name);
 	}
+
+	@Override
+	public String toString() {
+		return this.name;
+	}
+	
 }
