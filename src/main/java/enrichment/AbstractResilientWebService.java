@@ -36,7 +36,6 @@ public abstract class AbstractResilientWebService
 
 	@WebMethod
 	public OperatingSystemSnapshot identifySWEnvironment() throws EnrichmentFailedException  {
-		System.out.println(this.inventoryDAO.getLatestInventory().getTimestamp());
 		return this.inventoryDAO.getLatestInventory().getOperatingSystemSnapshot();
 	}
 

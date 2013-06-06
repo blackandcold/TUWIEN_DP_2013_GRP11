@@ -166,7 +166,6 @@ implements ISnapshot {
 						differences.addAll(oldSN.getDifference(newSN));
 					} else {
 						if((newValue != null && !newValue.equals(oldValue)) || (oldValue != null && !oldValue.equals(newValue))){
-							System.out.println(f.getName() + ": " + oldValue + " -> " + newValue);
 							differences.add(SnapshotDifference.createUpdate(f.getName(), oldValue, newValue));
 						}
 					}
