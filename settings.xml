@@ -5,6 +5,4 @@
         <serverName>localhost</serverName>
         <serverPort>27017</serverPort>
     </dbSettings>
-    <inventoryPaths>C:\Users\Stefan\Desktop</inventoryPaths>
-    <inventoryPaths>C:\inetpub</inventoryPaths>
 </serviceSettings>

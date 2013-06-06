@@ -8,11 +8,10 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import model.Inventory;
-import model.OperatingSystemSnapshot;
-import model.SnapshotDifference;
 import recorder.IRecorder;
 import recorder.RecorderFactory;
 import recorder.RecorderType;
+import util.Util;
 import dao.DAOFactory;
 import dao.IInventoryDAO;
 
@@ -37,6 +36,8 @@ public class InventoryService
 	
 	private void run() {
 		try {
+			System.out.println("Performing system inventory. This might take a few seconds...");
+			
 			// get the correct recorder instance for the current operating system
 			RecorderType type = this.determineRecorderType();
 			IRecorder recorder = RecorderFactory.createRecorder(type);
@@ -49,10 +50,9 @@ public class InventoryService
 			IInventoryDAO inventoryDAO = DAOFactory.createInventoryDAO(this.settings.getDbSettings());
 			inventoryDAO.add(inv);
 			
-			System.out.println("Press any key to exit...");
-			System.in.read();
+			System.out.println("Inventory finished. Timestamp: " + Util.formatDate(inv.getTimestamp()) + ". Hash: " + inv.getHashValue());
 		} catch(Exception ex){
-			ex.printStackTrace();
+			System.out.println("Creating inventory failed: " + ex.getMessage());
 		}
 	}
 	
@@ -78,9 +78,9 @@ public class InventoryService
 		    	Unmarshaller u = context.createUnmarshaller();
 		    	this.settings = (ServiceSettings) u.unmarshal(new File("./settings.xml"));
 			}
-		} catch (JAXBException e) {
-			e.printStackTrace();
-			System.out.println("Settings could not be loaded");
+		} catch (JAXBException ex) {
+			System.out.println("Settings could not be loaded: " + ex.getMessage());
+			System.out.println("Shutting down inventory services...");
 			System.exit(1);
 		}
 	}

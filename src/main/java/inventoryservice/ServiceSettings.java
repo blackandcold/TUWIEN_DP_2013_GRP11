@@ -23,7 +23,7 @@ public class ServiceSettings {
 		this.settings.setServerName("localhost");
 		this.settings.setServerPort(27017);
 		this.inventoryPaths = new ArrayList<String>();
-		this.inventoryPaths.add("C:\\Users\\Stefan\\Desktop\\Temp");
+		this.inventoryPaths.add("C:\\Users\\Stefan\\Desktop\\Temp\\test");
 	}
 
 	/**
