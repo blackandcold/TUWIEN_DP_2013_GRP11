@@ -45,31 +45,35 @@ public class Client {
 			System.out.print("> ");
 			String command = this.getCommandLineInput().toLowerCase();
 			while(!command.trim().equals("e")){
-				switch(command){
-				case "ca":
-					this.performEcho();
-					break;
-				case "id": 
-					this.performIdentification();
-					break;
-				case "sw": 
-					this.showSWEnvironment();
-					break;
-				case "hw": 
-					this.showHWEnvironment();
-					break;
-				case "ch": 
-					this.showChanges();
-					break;
-				case "h": 
-					this.showCommands();
-					break;
-				case "": 
-					System.out.println(service.identifyYourself());
-					break;
-					default:
-						System.out.println("Unkown command: " + command);
+				try {
+					switch(command){
+					case "ca":
+						this.performEcho();
+						break;
+					case "id": 
+						this.performIdentification();
+						break;
+					case "sw": 
+						this.showSWEnvironment();
+						break;
+					case "hw": 
+						this.showHWEnvironment();
+						break;
+					case "ch": 
+						this.showChanges();
+						break;
+					case "h": 
 						this.showCommands();
+						break;
+					case "": 
+						System.out.println(service.identifyYourself());
+						break;
+						default:
+							System.out.println("Unkown command: " + command);
+							this.showCommands();
+					}
+				} catch(EnrichmentFailedException ex) {
+					System.out.println(ex.getMessage());
 				}
 				System.out.print("> ");
 				command = this.getCommandLineInput().toLowerCase();

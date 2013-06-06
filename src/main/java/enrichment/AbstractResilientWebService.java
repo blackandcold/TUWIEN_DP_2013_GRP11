@@ -21,14 +21,14 @@ import enrichment.dto.SystemChangeSynopsis;
  * @author Stefan Weghofer
  */
 public abstract class AbstractResilientWebService
-	implements IResilientWebService {
+implements IResilientWebService {
 
 	private IInventoryDAO inventoryDAO;
 
 	public AbstractResilientWebService(DbSettings settings){
 		this.inventoryDAO = DAOFactory.createInventoryDAO(settings);
 	}
-	
+
 
 	/* *******************************************************
 	 * Resilient WebService Methods
@@ -36,69 +36,89 @@ public abstract class AbstractResilientWebService
 
 	@WebMethod
 	public OperatingSystemSnapshot identifySWEnvironment() throws EnrichmentFailedException  {
-		return this.inventoryDAO.getLatestInventory().getOperatingSystemSnapshot();
+		try {
+			return this.inventoryDAO.getLatestInventory().getOperatingSystemSnapshot();
+		} catch(Exception ex){
+			throw new EnrichmentFailedException(ex.getMessage());
+		}
 	}
 
 	@WebMethod
 	public HardwareSnapshot identifyHWEnvironment() throws EnrichmentFailedException  {
-		return this.inventoryDAO.getLatestInventory().getHardwareSnapshot();
+		try {
+			return this.inventoryDAO.getLatestInventory().getHardwareSnapshot();
+		} catch(Exception ex){
+			throw new EnrichmentFailedException(ex.getMessage());
+		}
 	}
 
 	@WebMethod
 	public List<SystemChangeSynopsis> serviceChangesSince(Date since) throws EnrichmentFailedException  {
-		List<SystemChangeSynopsis> result = new ArrayList<SystemChangeSynopsis>();
-		List<Inventory> timeline = this.inventoryDAO.getInventoryTimeline(since);
-		List<SnapshotDifference> differences;
-		Inventory predecessor, successor;
-		for(int i=0;(i+1)<timeline.size();i++){
-			predecessor = timeline.get(i);
-			successor = timeline.get(i+1);
-			if(predecessor != null && successor != null) {
-				differences = predecessor.getDifference(successor);
-				if(differences.size() > 0) {
-					result.add(SystemChangeSynopsis.create(successor.getTimestamp(), differences));
+		try {
+			List<SystemChangeSynopsis> result = new ArrayList<SystemChangeSynopsis>();
+			List<Inventory> timeline = this.inventoryDAO.getInventoryTimeline(since);
+			List<SnapshotDifference> differences;
+			Inventory predecessor, successor;
+			for(int i=0;(i+1)<timeline.size();i++){
+				predecessor = timeline.get(i);
+				successor = timeline.get(i+1);
+				if(predecessor != null && successor != null) {
+					differences = predecessor.getDifference(successor);
+					if(differences.size() > 0) {
+						result.add(SystemChangeSynopsis.create(successor.getTimestamp(), differences));
+					}
 				}
 			}
+			return result;
+		} catch(Exception ex){
+			throw new EnrichmentFailedException(ex.getMessage());
 		}
-		return result;
 	}
 
 	@WebMethod
 	public List<SystemChangeSynopsis> swEnvironmentChangesSince(Date since) throws EnrichmentFailedException  {
-		List<SystemChangeSynopsis> result = new ArrayList<SystemChangeSynopsis>();
-		List<Inventory> timeline = this.inventoryDAO.getInventoryTimeline(since);
-		List<SnapshotDifference> differences;
-		OperatingSystemSnapshot predecessor, successor;
-		for(int i=0;(i+1)<timeline.size();i++){
-			predecessor = timeline.get(i).getOperatingSystemSnapshot();
-			successor = timeline.get(i+1).getOperatingSystemSnapshot();
-			if(predecessor != null && successor != null) {
-				differences = predecessor.getDifference(successor);
-				if(differences.size() > 0) {
-					result.add(SystemChangeSynopsis.create(timeline.get(i+1).getTimestamp(), differences));
+		try {
+			List<SystemChangeSynopsis> result = new ArrayList<SystemChangeSynopsis>();
+			List<Inventory> timeline = this.inventoryDAO.getInventoryTimeline(since);
+			List<SnapshotDifference> differences;
+			OperatingSystemSnapshot predecessor, successor;
+			for(int i=0;(i+1)<timeline.size();i++){
+				predecessor = timeline.get(i).getOperatingSystemSnapshot();
+				successor = timeline.get(i+1).getOperatingSystemSnapshot();
+				if(predecessor != null && successor != null) {
+					differences = predecessor.getDifference(successor);
+					if(differences.size() > 0) {
+						result.add(SystemChangeSynopsis.create(timeline.get(i+1).getTimestamp(), differences));
+					}
 				}
 			}
+			return result;
+		} catch(Exception ex){
+			throw new EnrichmentFailedException(ex.getMessage());
 		}
-		return result;
 	}
 
 	@WebMethod
 	public List<SystemChangeSynopsis> hwEnvironmentChangesSince(Date since) throws EnrichmentFailedException  {
-		List<SystemChangeSynopsis> result = new ArrayList<SystemChangeSynopsis>();
-		List<Inventory> timeline = this.inventoryDAO.getInventoryTimeline(since);
-		List<SnapshotDifference> differences;
-		HardwareSnapshot predecessor, successor;
-		for(int i=0;(i+1)<timeline.size();i++){
-			predecessor = timeline.get(i).getHardwareSnapshot();
-			successor = timeline.get(i+1).getHardwareSnapshot();
-			if(predecessor != null && successor != null) {
-				differences = predecessor.getDifference(successor);
-				if(differences.size() > 0) {
-					result.add(SystemChangeSynopsis.create(timeline.get(i+1).getTimestamp(), differences));
+		try {
+			List<SystemChangeSynopsis> result = new ArrayList<SystemChangeSynopsis>();
+			List<Inventory> timeline = this.inventoryDAO.getInventoryTimeline(since);
+			List<SnapshotDifference> differences;
+			HardwareSnapshot predecessor, successor;
+			for(int i=0;(i+1)<timeline.size();i++){
+				predecessor = timeline.get(i).getHardwareSnapshot();
+				successor = timeline.get(i+1).getHardwareSnapshot();
+				if(predecessor != null && successor != null) {
+					differences = predecessor.getDifference(successor);
+					if(differences.size() > 0) {
+						result.add(SystemChangeSynopsis.create(timeline.get(i+1).getTimestamp(), differences));
+					}
 				}
 			}
+			return result;
+		} catch(Exception ex){
+			throw new EnrichmentFailedException(ex.getMessage());
 		}
-		return result;
 	}
 
 }
